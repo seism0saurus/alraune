@@ -1,0 +1,2 @@
+recipe.output.tmp_file={build.project_name}.bin.signed
+recipe.output.save_file={build.project_name}.bin.signed

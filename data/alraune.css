@@ -1,0 +1,486 @@
+body {
+    font-family: 'Lato';
+    max-width: 1024px;
+    margin: 0 auto 0;
+}
+
+/* Styling of the collapsable sections */
+.collapsible {
+    width: 100%;
+    display: block;
+    position: relative;
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+    padding: 8px 16px;
+    margin: 32px auto 0;
+    font-size: 16px;
+    line-height: 24px;
+    border: none;
+    outline: none;
+    text-align: left;
+}
+  
+.active, .collapsible:hover {
+    background-color: #6e7491;
+}
+
+.collapsible:after {
+    content: '\002B';
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+  
+.active:after {
+    content: "\2212";
+} 
+
+.content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+/* loading screen */
+.loading {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background-color: #fff;
+    z-index: 99;
+}
+  
+.alraune-loading-image {
+    animation: Pulsate 8s linear infinite;
+    position: absolute;
+    width: 200px;
+    text-align: center;
+    z-index: 101;
+}
+
+@keyframes Pulsate {
+    from { top: 100px; }
+    50% { top: 0px; }
+    to { top:100px; }
+}
+
+.pot-top-image {
+    position: relative;
+    top: 191px;
+    width: 200px;
+    z-index: 100;
+}
+
+.pot-bottom-image {
+    position: relative;
+    top: 345px;
+    width: 200px;
+    margin-left: -204px;
+    z-index: 102;
+}
+
+.loading-text {
+    position: relative;
+    top: -100px;
+    font-size: 24px;
+    line-height: 28px;
+}
+
+
+/* Setup section */
+.setup {
+    display: flex;
+    flex-direction: column;
+    display: block;
+    position: relative;
+    padding: 8px 16px;
+    margin: 0 auto 0;
+    font-size: 16px;
+    line-height: 24px;
+    box-shadow: 3px 15px 8px -10px rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+.setup-input {
+    position: relative;
+    width: 256px;
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid #ff2e7e;
+}
+
+label {
+    position: relative;
+    margin: 0 0 0 30px;
+}
+
+.option-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 8px 0;
+    margin: 0 auto 0;
+}
+
+.label-input-pair {
+    display: block;
+    position: relative;    
+}
+
+.credentials {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: left;
+    position: relative;
+    width: 100%;
+    padding: 8px 0;
+    margin: 0 auto 0;
+}
+
+
+/* Alraune section */
+.alraune {
+    display: flex;
+    flex-direction: column;
+    display: block;
+    position: relative;
+    padding: 8px 16px;
+    margin: 0 auto 0;
+    font-size: 16px;
+    line-height: 24px;
+    box-shadow: 3px 15px 8px -10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.alraune-img {
+    width: 256px;
+    height: 256px;
+    margin: 16px;
+}
+
+/* Tickle the alraune */
+.alraune-img:hover {
+    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+    transform: translate3d(0, 0, 0);
+}
+
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(0, -1px, 0);
+    }
+    20%, 80% {
+        transform: translate3d(0, 2px, 0);
+    }
+    30%, 50%, 70% {
+        transform: translate3d(0, -4px, 0);
+    }
+    40%, 60% {
+        transform: translate3d(0, 4px, 0);
+    }
+}
+
+/* Recalibration section */
+.calibration {
+    display: flex;
+    flex-direction: column;
+    display: block;
+    position: relative;
+    padding: 8px 16px;
+    margin: 0 auto 0;
+    font-size: 16px;
+    line-height: 24px;
+    box-shadow: 3px 15px 8px -10px rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+.text{
+    position: relative;
+    margin: 15px 30px;
+}
+
+/* Sound demo section */
+.demo {
+    display: flex;
+    flex-direction: column;
+    display: block;
+    position: relative;
+    padding: 8px 16px;
+    margin: 0 auto 0;
+    font-size: 16px;
+    line-height: 24px;
+    box-shadow: 3px 15px 8px -10px rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+/* loudness settings */
+.loudness-form {
+    display: flex;
+    flex-direction: column;
+    display: block;
+    position: relative;
+    padding: 8px 16px;
+    margin: 0 auto 0;
+    font-size: 16px;
+    line-height: 24px;
+    box-shadow: 3px 15px 8px -10px rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+.bar {
+    display: flex;
+    flex-direction: row;
+}
+
+.loudness {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+
+    position: relative;
+    height: 20px;
+    flex-grow: 1;
+    margin: 15px 30px
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Default button design */
+.button {
+    border: none;
+    font-family: 'Lato';
+    font-size: inherit;
+    color: inherit;
+    background: none;
+    cursor: pointer;
+    padding: 25px 80px;
+    display: inline-block;
+    margin: 15px 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    outline: none;
+    position: relative;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    flex-grow: 1;
+}
+
+.button:after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.button:before {
+    position: absolute;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    height: 100%;
+    left: 0;
+    top: 0;
+    line-height: 3;
+    font-size: 140%;
+    width: 60px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.button-separator {
+    padding: 25px 60px 25px 120px;
+}
+
+.button-separator:before {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+/* Mute button */
+.button-mute {
+    background: #3498db;
+    color: #fff;
+}
+
+.button-mute:hover {
+    background: #2980b9;
+}
+
+.button-mute:active {
+    background: #2980b9;
+    top: 2px;
+}
+
+/* Quieter button */
+.button-quieter {
+    background: #2ecc71;
+    color: #fff;
+}
+
+.button-quieter:hover {
+    background: #27ae60;
+}
+
+.button-quieter:active {
+    background: #27ae60;
+    top: 2px;
+}
+
+/* Louder button */
+.button-louder {
+    background: #e74c3c;
+    color: #fff;
+}
+
+.button-louder:hover {
+    background: #c0392b;
+}
+
+.button-louder:active {
+    background: #c0392b;
+    top: 2px;
+}
+
+/* Recalibrate button */
+.button-recalibrate {
+    background: #28aca5;
+    color: #fff;
+    flex-grow: 0;
+    flex-shrink: 1;
+}
+
+.button-recalibrate:hover {
+    background: #18746f;
+}
+
+.button-recalibrate:active {
+    background: #18746f;
+    top: 2px;
+}
+
+/* Water button*/
+.button-water {
+    background: #eeb64e;
+    color: #fff;
+}
+
+.button-water:hover {
+    background: #ac7309;
+}
+
+.button-water:active {
+    background: #ac7309;
+    top: 2px;
+}
+
+/* Birthday button */
+.button-birthday {
+    background: #4730ac;
+    color: #fff;
+}
+
+.button-birthday:hover {
+    background: #241469;
+}
+
+.button-birthday:active {
+    background: #241469;
+    top: 2px;
+}
+
+/* Christmas button */
+.button-christmas {
+    background: #c542bf;
+    color: #fff;
+}
+
+.button-christmas:hover {
+    background: #72016c;
+}
+
+.button-christmas:active {
+    background: #72016c;
+    top: 2px;
+}
+
+/* Setup button */
+.button-setup {
+    background: #e00056;
+    color: #fff;
+}
+
+.button-setup:hover {
+    background: #ff2e7e;
+}
+
+.button-setup:active {
+    background: #ff2e7e;
+    top: 2px;
+}
+
+/* Scan button */
+.button-scan {
+    background: #970cd8;
+    color: #fff;
+}
+
+.button-scan:hover {
+    background: #bd2eff;
+}
+
+.button-scan:active {
+    background: #bd2eff;
+    top: 2px;
+}
+
+/* Different icons for the buttons */
+.icon-mute:before {
+    content: "🔇";
+}
+
+.icon-quieter:before {
+    content: "🔉";
+}
+
+.icon-louder:before {
+    content: "🔊";
+}
+
+.icon-recalibrate:before {
+    content: "📏";
+}
+
+.icon-water:before {
+    content: "💧";
+}
+
+.icon-birthday:before {
+    content: "🎂";
+}
+
+.icon-christmas:before {
+    content: "🎄";
+}
+
+.icon-setup:before {
+    content: "💾";
+}
+
+.icon-scan:before {
+    content: "🖧";
+}

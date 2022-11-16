@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/alraune_ico.jpg" rel="icon" type="image/jpeg">
+    <link rel="stylesheet" href="/alraune.css">
+    <script type="text/javascript" src="/alraune.js"></script>
+    <title>Alraune</title>
+    </head>
+    
+    <body>
+
+        <button class="collapsible active">Alraunen Gesundheitsmonitor</button>
+        <div class="alraune content">
+            <img src="/alraune.jpg" alt="Alraune" class="alraune-img" id="alraune-img">
+            <div class="status">
+                <div>Feuchtigkeit: <span id="moisture"></span></div>
+                <div>Grenzwert für Pumpe: <span id="treshold"></span></div>
+                <div>Speicher: <span id="memory"></span></div>
+                <div>Braucht Wasser: <span id="needsWater"></span></div>
+                <div>Tank auffüllen: <span id="needsRefill"></span></div>
+            </div>
+        </div>
+
+        <button class="collapsible active">Lautstärke</button>
+        <form class="loudness-form content">
+            <div class="text">
+                Hier kann die Lautstärke der Alraune eingestellt werden.
+                Für einen Urlaub empfiehlt es sich, die Alraune stumm zu schalten, damit die Nachbarn nicht gestört werden.
+            </div>
+            <div class="bar">
+                <progress max="30" value="10" class="loudness" id="loudness"></progress>
+            </div>
+            <div class="buttons">
+                <button id="mute" class="button button-separator button-mute icon-mute">Stumm</button>
+                <button id="quieter" class="button button-separator button-quieter icon-quieter">Leiser</button>
+                <button id="louder" class="button button-separator button-louder icon-louder">Lauter</button>
+            </div>
+        </form>
+
+        <button class="collapsible">Sensorkalibrierung</button>
+        <form class="calibration content">
+            <div class="text">
+                Mit der Zeit kann sich der Sensor verstellen.
+                Falls die Alraune trocken ist, aber noch kein Wasser gepumpt wird, kann der Sensor neu kalibriert werden.
+                Dieser Button sollte NICHT geklickt werden, wenn die Pflanze nass ist. Ansonsten wird sie dauerhaft nass gehalten und wird schimmeln oder faulen.
+            </div>
+            <div class="buttons">
+                <button id="recalibrate" class="button button-separator button-recalibrate icon-recalibrate"type="submit">Sensor neu kalibrieren</button>
+            </div>
+        </form>
+
+        <button class="collapsible">Demo</button>
+        <form class="demo content">
+            <div class="text">
+                Um die verschiedenen Sounds der Alraune auszuprobieren, können die Buttons aus diesem Demobereich genutzt werden.
+                Es wird jeweils ein zufälliger Sound aus der ausgewählten Kategorie abgespielt.
+            </div>
+            <div class="buttons">
+                <button id="water" class="button button-separator button-water icon-water">Wasser</button>
+                <button id="birthday" class="button button-separator button-birthday icon-birthday">Geburtstag</button>
+                <button id="christmas" class="button button-separator button-christmas icon-christmas">XMas</button>   
+            </div>  
+        </form>
+    </body>
+</html>

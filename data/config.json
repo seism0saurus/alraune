@@ -1,0 +1,29 @@
+{
+    "name": "will-be-set-during-setup",
+    "wlan": {
+        "ssid": "will-be-set-during-setup",
+        "password": "will-be-set-during-setup",
+        "hostname": "alraune"
+    },
+    "upgrade": {
+        "url": "my-update-server",
+        "path": "/alraune/files/",
+        "user": "alraune",
+        "password": "my-password"
+    },
+    "log": {
+        "url": "https://my-logstash-server",
+        "user": "alraune",
+        "password": "my-password"
+    },
+    "birthday": {
+        "day": 22,
+        "month": 11
+    },
+    "alerting": {
+        "fromHour": 8,
+        "toHour": 22
+    },
+    "sensorThreshold": 500,
+    "volume": 20    
+}

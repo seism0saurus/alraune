@@ -1,0 +1,16 @@
+# Keep keypair private
+Alraune/private.key
+Alraune/public.key
+
+# The binaries don't have to be published
+Alraune/Alraune.ino.bin
+Alraune/Alraune.ino.bin.signed
+
+# Don't publish my config
+data/config.local.json
+
+# Don't publish my server or username
+publish_new_version.local.sh
+
+# Raw material of the sounds are private
+sounds/

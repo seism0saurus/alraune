@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/alraune_ico.jpg" rel="icon" type="image/jpeg">
+    <link rel="stylesheet" href="/alraune.css">
+    <script type="text/javascript" src="/setup.js"></script>
+    <title>Alraune - Setup</title>
+    </head>
+    
+    <body>
+        <button class="collapsible active">Alraune - Setup</button>
+        <form class="setup content">
+            <div class="option-container">
+                <div class="text">
+                    Gibt deiner Alraune einen Namen.
+                </div>
+                <div class="label-input-pair">
+                    <label for="alraune-name">Name der Alraune:</label>
+                    <input class="setup-input" id="alraune-name" type="text" value="Meine Alraune" required/>
+                </div>
+            </div>
+
+            <div class="option-container">
+                <div class="text">
+                    Wähle deinen Geburtstag aus. Vielleicht denkt deine Alraune ja an dich.
+                </div>
+                <div class="label-input-pair">
+                    <label for="alraune-birthday">Dein Geburtstag:</label>
+                    <input class="setup-input" id="alraune-birthday" type="date" value="Meine Alraune" required/>
+                </div>
+            </div>
+
+            <div class="option-container">
+                <div class="text">
+                    Bitte wähle ein Netzwerk für deine Alraune aus und gib das passende Passwort ein.
+                </div>
+                <div class="credentials">
+                    <div class="label-input-pair">
+                        <label for="alraune-wlan-ssid">Deine WLAN SSID:</label>
+                        <select class="setup-input" id="alraune-wlan-ssid" required>
+                            <option value="unknown">unknown</option>
+                        </select>
+                    </div>
+                    <div class="label-input-pair">
+                        <label for="alraune-wlan-password">WLAN Passwort:</label>
+                        <input class="setup-input" id="alraune-wlan-password" type="password" value=""/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button id="scan" class="button button-separator button-scan icon-scan">Netzwerke suchen</button>
+                <button id="setup" class="button button-separator button-setup icon-setup">Speichern</button>
+            </div>
+        </form>
+
+        <div id="loading" class="loading">
+            <img id="alraune-loading-image" class="alraune-loading-image" src="/alraune.png" alt="Loading animation: Pull out the alraune" />
+            <img id="pot-top-image" class="pot-top-image" src="/topf_oben.png" alt="top part of the pot of the alraune" />
+            <img id="pot-bottom-image" class="pot-bottom-image" src="/topf_unten.png" alt="bottom part of the pot of the alraune" />
+            <div class="loading-text">
+                Setup läuft. Bitte warten...
+            </div>
+        </div>          
+        </body>
+</html>
