@@ -1,6 +1,8 @@
 # Keep keypair private
 Alraune/private.key
 Alraune/public.key
+data/private.key
+data/public.key
 
 # The binaries don't have to be published
 Alraune/Alraune.ino.bin
