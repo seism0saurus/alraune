@@ -21,23 +21,23 @@ void setupDFPlayer(){
   //Set volume value. From 0 to 30
   myDFPlayer.volume(volume);
 
-  waterRefillSounds = myDFPlayer.readFileCountsInFolder(waterRefillFolder);
+  waterRefillSounds = myDFPlayer.readFileCountsInFolder(WATER_REFILL_FOLDER);
   String message = "Found ";
   message += waterRefillSounds;
   message += " Sounds in refill sound folder nr. ";
-  message += waterRefillFolder;
+  message += WATER_REFILL_FOLDER;
   log(message);
-  birthdaySounds = myDFPlayer.readFileCountsInFolder(birthdayFolder);
+  birthdaySounds = myDFPlayer.readFileCountsInFolder(BIRTHDAY_FOLDER);
   message = "Found ";
   message += birthdaySounds;
   message += " Sounds in birthday sound folder nr. ";
-  message += birthdayFolder;
+  message += BIRTHDAY_FOLDER;
   log(message);
-  christmasSounds = myDFPlayer.readFileCountsInFolder(christmasFolder);
+  christmasSounds = myDFPlayer.readFileCountsInFolder(CHRISTMAS_FOLDER);
   message = "Found ";
   message += christmasSounds;
   message += " Sounds in christmas sound folder nr. ";
-  message += christmasFolder;
+  message += CHRISTMAS_FOLDER;
   log(message);
 }
 
@@ -63,11 +63,10 @@ void playWaterRefillSound(){
    int song = random(1, waterRefillSounds);
    String message = "Play water refill sound ";
    message += song;
-   message += " from ";
+   message += "/";
    message += waterRefillSounds;
-   message += " available Sounds";
    Serial.println(message);
-   myDFPlayer.playFolder(waterRefillFolder, song);
+   myDFPlayer.playFolder(WATER_REFILL_FOLDER, song);
    handleMediaPlayer();
 }
 
@@ -82,11 +81,10 @@ void playBirthdaySound(){
    int song = random(1, birthdaySounds);
    String message = "Play birthday sound ";
    message += song;
-   message += " from ";
+   message += "/";
    message += birthdaySounds;
-   message += " available Sounds";
    Serial.println(message);
-   myDFPlayer.playFolder(birthdayFolder, song);
+   myDFPlayer.playFolder(BIRTHDAY_FOLDER, song);
    handleMediaPlayer();
 }
 
@@ -102,11 +100,10 @@ void playChristmasSound(){
    int song = random(1, christmasSounds);
    String message = "Play christmas sound ";
    message += song;
-   message += " from ";
+   message += "/";
    message += christmasSounds;
-   message += " available Sounds";
    Serial.println(message);
-   myDFPlayer.playFolder(christmasFolder, song);
+   myDFPlayer.playFolder(CHRISTMAS_FOLDER, song);
    handleMediaPlayer();
 }
 

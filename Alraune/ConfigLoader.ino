@@ -108,7 +108,7 @@ void loadWlanConfig(JSONVar &configObject){
     if (wlan.hasOwnProperty("password")){ 
       wlanPassword = (const char*)wlan["password"];
       Serial.print(F("WLAN Password: "));
-      if (hidePasswords){
+      if (HIDE_PASSWORDS){
         Serial.println(F("*****"));
       } else {
         Serial.println(wlanPassword);
@@ -173,7 +173,7 @@ void loadUpgradeConfig(JSONVar &configObject){
     if (upgrade.hasOwnProperty("password")){
       upgradePassword = (const char*)upgrade["password"];
       Serial.print(F("Upgrade Password: "));
-      if (hidePasswords){
+      if (HIDE_PASSWORDS){
         Serial.println(F("*****"));
       } else {
         Serial.println(upgradePassword);
@@ -221,7 +221,7 @@ void loadLogConfig(JSONVar &configObject){
     if (log.hasOwnProperty("password")){
       logPassword = (const char*)log["password"];
       Serial.print(F("Upgrade Password: "));
-      if (hidePasswords){
+      if (HIDE_PASSWORDS){
         Serial.println(F("*****"));
       } else {
         Serial.println(logPassword);

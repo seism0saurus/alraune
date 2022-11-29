@@ -1,4 +1,4 @@
-/*
+  /*
  * Stores the current configuration as JSON in the config.json file on the LittleFS filesystem
  * 
  * This overrides the current file
@@ -56,7 +56,7 @@ void writeConfigToFs(){
     configFile.close();
     
     Serial.print(F("Current configuration as JSON object: "));
-    if (hidePasswords){
+    if (HIDE_PASSWORDS){
       jsonString.replace(wlanPassword,"*****");
       jsonString.replace(upgradePassword,"*****");
       jsonString.replace(logPassword,"*****");
@@ -98,7 +98,7 @@ void writeWlanConfig(JSONVar &configObject){
   
   wlan["password"] = wlanPassword;
   Serial.print(F("WLAN Password: "));
-  if (hidePasswords){
+  if (HIDE_PASSWORDS){
     Serial.println(F("*****"));
   } else {
     Serial.println(wlanPassword);
@@ -139,7 +139,7 @@ void writeUpgradeConfig(JSONVar &configObject){
   
   upgrade["password"] = upgradePassword;
   Serial.print(F("Upgrade Password: "));
-  if (hidePasswords){
+  if (HIDE_PASSWORDS){
     Serial.println(F("*****"));
   } else {
     Serial.println(upgradePassword);
@@ -171,7 +171,7 @@ void writeLogConfig(JSONVar &configObject){
 
   log["password"] = logPassword;
   Serial.print(F("Upgrade Password: "));
-  if (hidePasswords){
+  if (HIDE_PASSWORDS){
     Serial.println(F("*****"));
   } else {
     Serial.println(logPassword);

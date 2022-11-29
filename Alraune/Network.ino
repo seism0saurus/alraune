@@ -23,7 +23,7 @@ void setupNetwork(){
   if (testWifi())
   {
     Serial.println(F("Succesfully Connected"));
-    initClient();  
+    initClient();
     networkMonitoringDelay.start(1000*10);
     connectedToSsid = true;
   } else {
@@ -77,19 +77,21 @@ void updateDns(){
  * If it is connected, everything is fine
  * Otherwise the status is printed and the network setup function is called again
  */
-void handleNetworErrorsIfNeeded(){
+void handleNetworkErrorsIfNeeded(){
   if(networkMonitoringDelay.justFinished()){
     networkMonitoringDelay.repeat();
     switch (WiFi.status()){
       case WL_CONNECTED:
+        consecutiveErrors = 0;
         break;
       default:
-        String errorMessage = "Network error detected: ";
-        errorMessage += WiFi.status();
-        errorMessage += ". Trying to reconnect. If it fails, the device will reboot in 3 Minutes";
-        log(errorMessage);
-        setupNetwork();
-        Serial.println(F("Network reconnected"));
+        if(consecutiveErrors == 7){
+          consecutiveErrors = 0;
+          setupNetwork();
+          Serial.println(F("Network reconnected"));
+        } else {
+          consecutiveErrors++;
+        }
         break;
     } 
   }

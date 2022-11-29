@@ -9,35 +9,35 @@
 void setupServer(){
   Serial.println(F("Configuring web server"));
 
-  server.on("/", HTTP_GET, handleFileRead);
-  server.on("/", HTTP_OPTIONS, sendCrossOriginHeader);
-  server.on("/index.html", HTTP_GET, handleFileRead);
-  server.on("/index.html", HTTP_OPTIONS, sendCrossOriginHeader);
-  server.on("/alraune_ico.jpg", HTTP_GET, handleFileRead);
-  server.on("/alraune.jpg", HTTP_GET, handleFileRead);
-  server.on("/alraune.png", HTTP_GET, handleFileRead);
-  server.on("/topf_oben.png", HTTP_GET, handleFileRead);
-  server.on("/topf_unten.png", HTTP_GET, handleFileRead);
-  server.on("/alraune.css", HTTP_GET, handleFileRead);
-  server.on("/alraune.js", HTTP_GET, handleFileRead);
-  server.on("/setup.js", HTTP_GET, handleFileRead);
-  server.on("/tickle.mp3", HTTP_GET, handleFileRead);
+  server.on(F("/"), HTTP_GET, handleFileRead);
+  server.on(F("/"), HTTP_OPTIONS, sendCrossOriginHeader);
+  server.on(F("/index.html"), HTTP_GET, handleFileRead);
+  server.on(F("/index.html"), HTTP_OPTIONS, sendCrossOriginHeader);
+  server.on(F("/alraune_ico.jpg"), HTTP_GET, handleFileRead);
+  server.on(F("/alraune.jpg"), HTTP_GET, handleFileRead);
+  server.on(F("/alraune.png"), HTTP_GET, handleFileRead);
+  server.on(F("/topf_oben.png"), HTTP_GET, handleFileRead);
+  server.on(F("/topf_unten.png"), HTTP_GET, handleFileRead);
+  server.on(F("/alraune.css"), HTTP_GET, handleFileRead);
+  server.on(F("/alraune.js"), HTTP_GET, handleFileRead);
+  server.on(F("/setup.js"), HTTP_GET, handleFileRead);
+  server.on(F("/tickle.mp3"), HTTP_GET, handleFileRead);
   
-  server.on("/json", HTTP_GET, handleJson);
-  server.on("/wlan/scan", HTTP_GET, handleNetworkScan);
-  server.on("/wlan/setup", HTTP_POST, handleNetworkSetup);
-  server.on("/wlan/status", HTTP_GET, handleNetworkStatus);
-  server.on("/wlan/status", HTTP_OPTIONS, sendCrossOriginHeader);
-  server.on("/play", HTTP_POST, handlePlaySound);
-  server.on("/recalibrate", HTTP_POST, handleSensorRecalibration);
-  server.on("/volume", HTTP_POST, handleVolume);
+  server.on(F("/json"), HTTP_GET, handleJson);
+  server.on(F("/wlan/scan"), HTTP_GET, handleNetworkScan);
+  server.on(F("/wlan/setup"), HTTP_POST, handleNetworkSetup);
+  server.on(F("/wlan/status"), HTTP_GET, handleNetworkStatus);
+  server.on(F("/wlan/status"), HTTP_OPTIONS, sendCrossOriginHeader);
+  server.on(F("/play"), HTTP_POST, handlePlaySound);
+  server.on(F("/recalibrate"), HTTP_POST, handleSensorRecalibration);
+  server.on(F("/volume"), HTTP_POST, handleVolume);
   
   server.onNotFound(handleNotFound);
   
   server.begin();
   ip=WiFi.localIP().toString();
   MDNS.addService("http", "tcp", 80);
-  Serial.println(F("Web server started"));
+  log("Web server started");
 }
 
 /*
@@ -57,32 +57,17 @@ void handleJson() {
   digitalWrite(led, 0);
   // The sensor ranges from 0-1000. The value is higher, if the soil is more dry. Invert the value, since we want to measure moisture not dryness
   sensorValue = 1000 - analogRead(sensorPin);
-  
-  String message = "{\n";
-        message += " \"title\": \"";
-        message +=    pagename;
-        message += "\",\n";
-        message += " \"moisture\": ";
-        message +=    sensorValue;
-        message += ",\n";
-        message += " \"sensorThreshold\": ";
-        message +=    sensorThreshold;
-        message += ",\n";
-        message += " \"memory\": ";
-        message +=        ESP.getFreeHeap();
-        message += ",\n";
-        message += " \"needsWater\": ";
-        message +=        needsWater;
-        message += ",\n";
-        message += " \"needsRefill\": ";
-        message +=        needsRefill;
-        message += ",\n";
-        message += " \"volume\": ";
-        message +=        volume;
-        message += "\n}";
-        message += "\n";
-  
-  server.send(200, "application/json", message);
+
+  JSONVar jsonObject;
+  jsonObject["title"] = pagename;
+  jsonObject["moisture"] = sensorValue;
+  jsonObject["sensorThreshold"] = sensorThreshold;
+  jsonObject["memory"] = (long) ESP.getFreeHeap();
+  jsonObject["needsWater"] = needsWater;
+  jsonObject["needsRefill"] = needsRefill;
+  jsonObject["volume"] = volume;
+
+  server.send(200, APPLICATION_JSON, JSON.stringify(jsonObject));
   digitalWrite(led, 255);
   Serial.println(F("JSON for /json sent"));
 }
@@ -99,7 +84,8 @@ void handleNetworkScan() {
   scan();
   Serial.println(wlanListJson);
   
-  server.send(200, "application/json", wlanListJson);
+  server.send(200, APPLICATION_JSON, wlanListJson);
+  wlanListJson = "";
   digitalWrite(led, 255);
   Serial.println(F("JSON for /wlan/scan sent"));
 }
@@ -113,15 +99,10 @@ void handleNetworkStatus(){
   Serial.println(F("Requested /wlan/status"));
   digitalWrite(led, 0);
 
-  String json = "{\"connectedToSsid\":";
-  if (connectedToSsid){
-    json+= "true";
-  } else {
-    json+= "false";
-  }
-  json += "}";
+  JSONVar jsonObject;
+  jsonObject["connectedToSsid"] = connectedToSsid;
   server.sendHeader(F("Access-Control-Allow-Origin"),F("http://alraune.local"));
-  server.send(200, "application/json", json);
+  server.send(200, APPLICATION_JSON, JSON.stringify(jsonObject));
   digitalWrite(led, 255);
   Serial.println(F("JSON for /wlan/status sent"));
 }
@@ -141,7 +122,7 @@ void handleNetworkSetup() {
   if (server.hasArg("plain")== false){
     Serial.println(F("No body sent"));
  
-    server.send(400, "text/plain", "Invalid body");
+    server.send(400, TEXT_PLAIN, "Invalid body");
     return;
   }
   JSONVar body = JSON.parse(server.arg("plain"));
@@ -149,42 +130,42 @@ void handleNetworkSetup() {
   if (JSON.typeof(body) == "undefined") {
     Serial.println(F("Body is no valid JSON"));
  
-    server.send(400, "text/plain", "Invalid body");
+    server.send(400, TEXT_PLAIN, "Invalid body");
     return;
   }
     
   if (!body.hasOwnProperty("name")) {
     Serial.println(F("JSON does not contain a name"));
  
-    server.send(400, "text/plain", "(String) name is reqired in the body");
+    server.send(400, TEXT_PLAIN, "(String) name is reqired in the body");
     return;
   }
   
   if (!body.hasOwnProperty("ssid")) {
     Serial.println(F("JSON does not contain a ssid"));
  
-    server.send(400, "text/plain", "(String) ssid is reqired in the body");
+    server.send(400, TEXT_PLAIN, "(String) ssid is reqired in the body");
     return;
   }
     
   if (!body.hasOwnProperty("password")) {
     Serial.println(F("JSON does not contain a password"));
  
-    server.send(400, "text/plain", "(String) password is reqired in the body");
+    server.send(400, TEXT_PLAIN, "(String) password is reqired in the body");
     return;
   }
       
   if (!body.hasOwnProperty("birthdayDay")) {
     Serial.println(F("JSON does not contain a birthdayDay"));
  
-    server.send(400, "text/plain", "(int) birthdayDay is reqired in the body");
+    server.send(400, TEXT_PLAIN, "(int) birthdayDay is reqired in the body");
     return;
   }
       
   if (!body.hasOwnProperty("birthdayMonth")) {
     Serial.println(F("JSON does not contain a birthdayMonth"));
  
-    server.send(400, "text/plain", "(int) birthdayMonth is reqired in the body");
+    server.send(400, TEXT_PLAIN, "(int) birthdayMonth is reqired in the body");
     return;
   }
   
@@ -196,7 +177,7 @@ void handleNetworkSetup() {
   writeConfigToFs();
 
   
-  server.send(200, "text/plain", "Config written");
+  server.send(200, TEXT_PLAIN, "Config written");
 
   delay(20*1000);
   Serial.println(F("Reboot system via watchdog"));
@@ -244,7 +225,7 @@ void handleVolume(){
   if (server.hasArg("plain")== false){
     Serial.println(F("No body sent"));
  
-    server.send(400, "text/plain", "Invalid body");
+    server.send(400, TEXT_PLAIN, "Invalid body");
     return;
   }
   JSONVar body = JSON.parse(server.arg("plain"));
@@ -252,14 +233,14 @@ void handleVolume(){
   if (JSON.typeof(body) == "undefined") {
     Serial.println(F("Body is no valid JSON"));
  
-    server.send(400, "text/plain", "Invalid body");
+    server.send(400, TEXT_PLAIN, "Invalid body");
     return;
   }
   
   if (!body.hasOwnProperty("volume")) {
     Serial.println(F("JSON does not contain a volume"));
  
-    server.send(400, "text/plain", "(int) volume is reqired in the body");
+    server.send(400, TEXT_PLAIN, "(int) volume is reqired in the body");
     return;
   }
   
@@ -276,7 +257,7 @@ void handleVolume(){
   }
   
   
-  server.send(200, "text/plain", "Volume set");
+  server.send(200, TEXT_PLAIN, "Volume set");
   digitalWrite(led, 255);
   Serial.println(F("Volume set"));
 }
@@ -295,7 +276,7 @@ void handlePlaySound(){
   if (server.hasArg("plain")== false){
     Serial.println(F("No body sent"));
  
-    server.send(400, "text/plain", "Invalid body");
+    server.send(400, TEXT_PLAIN, "Invalid body");
     return;
   }
   JSONVar body = JSON.parse(server.arg("plain"));
@@ -303,14 +284,14 @@ void handlePlaySound(){
   if (JSON.typeof(body) == "undefined") {
     Serial.println(F("Body is no valid JSON"));
  
-    server.send(400, "text/plain", "Invalid body");
+    server.send(400, TEXT_PLAIN, "Invalid body");
     return;
   }
   
   if (!body.hasOwnProperty("sound")) {
     Serial.println(F("JSON does not contain a sound"));
  
-    server.send(400, "text/plain", "(String) sound is reqired in the body");
+    server.send(400, TEXT_PLAIN, "(String) sound is reqired in the body");
     return;
   }
   
@@ -325,11 +306,11 @@ void handlePlaySound(){
   } else {
     Serial.println(F("Requested sound is unknown"));
  
-    server.send(400, "text/plain", "sound is unknown");
+    server.send(400, TEXT_PLAIN, "sound is unknown");
   }
 
   
-  server.send(200, "text/plain", "Volume set");
+  server.send(200, TEXT_PLAIN, "Playing");
   digitalWrite(led, 255);
   Serial.println(F("Played sound"));
 }
@@ -354,7 +335,7 @@ void handleFileRead() {
   Serial.print(F("handleFileRead: "));
   Serial.println(path);
   if (!fsOK) {
-    server.send(500, "text/plain", "Filesystem not ready");
+    server.send(500, TEXT_PLAIN, "Filesystem not ready");
     return;
   }
 
@@ -403,7 +384,7 @@ void handleNotFound() {
   message += uri;
   log(message);
   
-  server.send(404, "text/plain", "File not found!\r\n");
+  server.send(404, TEXT_PLAIN, "File not found!\r\n");
   digitalWrite(led, 255);
 }
 

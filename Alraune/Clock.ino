@@ -27,11 +27,7 @@ tm getTimeInfo(){
     struct tm timeinfo;
     time_t now = time(nullptr);
     gmtime_r(&now, &timeinfo);
-
-    String message = "Current time is ";
-    message += asctime(&timeinfo);
-    log(message);
-    
+  
     return timeinfo;
 }
 
@@ -43,7 +39,15 @@ tm getTimeInfo(){
  */
 boolean isBirthday(){
     struct tm timeinfo = getTimeInfo();
- 
+
+    String message = "Current time is ";
+    message += asctime(&timeinfo);
+    message += "birthday is ";
+    message += birthdayDay;
+    message += ".";
+    message += birthdayMonth;
+    log(message);
+    
     const uint8_t day = timeinfo.tm_mday;
     const uint8_t month = timeinfo.tm_mon + 1;
 
@@ -58,11 +62,19 @@ boolean isBirthday(){
  */
 boolean isChristmas(){
     struct tm timeinfo = getTimeInfo();
-  
+
+    String message = "Current time is ";
+    message += asctime(&timeinfo);
+    message += "christmas is ";
+    message += CHRISTMAS_DAY;
+    message += ".";
+    message += CHRISTMAS_MONTH;
+    log(message);
+    
     const uint8_t day = timeinfo.tm_mday;
     const uint8_t month = timeinfo.tm_mon + 1;
 
-    return ( christmasMonth == month && christmasDay == day );
+    return ( CHRISTMAS_MONTH == month && CHRISTMAS_DAY == day );
 }
 
 /*

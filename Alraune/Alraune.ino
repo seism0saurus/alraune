@@ -40,7 +40,7 @@
  * Hide passwords in log lines
  * Set to false for debugging of connection problems
  */
-const boolean hidePasswords = true;
+constexpr boolean HIDE_PASSWORDS = true;
 
 /* 
  * Upgrade configuration
@@ -52,9 +52,8 @@ const boolean hidePasswords = true;
  * The upgrade user and password are needed for the basic authentication against the upgrade server. Since the firmware could contain sensitive information like credentials, they should be protected
  */
 #ifndef VERSION
-  #define VERSION "0.9.10"
+  #define VERSION "0.9.13"
 #endif
-String version = VERSION;
 String upgradeUrl;
 String upgradePath;
 String upgradeUser;
@@ -90,6 +89,7 @@ String upgradePassword;
 String ssid;
 String wlanPassword;
 boolean connectedToSsid = false;
+byte consecutiveErrors = 0;
 String wlanListJson;
 
 /*
@@ -115,19 +115,19 @@ boolean fsOK;
  * Configure a serial interface on the pins 4 and 5 and initialize the conncted DFPlayer
  * The folder variables define wich folder number on the DFPlayer MiniSD card should be used for which purpose
  * They are important for the order in which you store the files on the card. See https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299#target_6
- * - waterRefillFolder contains the sounds, that should remind the owner to refill the water. The number of this sounds will be stored in waterRefillSounds
- * - birthdayFolder contains the sounds, that are played on the configured birthday of the owner. The number of this sounds will be stored in birthdaySounds
- * - christmasFolder contains the sounds, that are played on christmas eve (24.12). The number of this sounds will be stored in christmasSounds
+ * - WATER_REFILL_FOLDER contains the sounds, that should remind the owner to refill the water. The number of this sounds will be stored in waterRefillSounds
+ * - BIRTHDAY_FOLDER contains the sounds, that are played on the configured birthday of the owner. The number of this sounds will be stored in birthdaySounds
+ * - CHRISTMAS_FOLDER contains the sounds, that are played on christmas eve (24.12). The number of this sounds will be stored in christmasSounds
  */
 SoftwareSerial audioSerial(D2, D1); // RX, TX
 DFRobotDFPlayerMini myDFPlayer;
 uint8_t volume = 10;
-const uint8_t waterRefillFolder = 1;
-const uint8_t birthdayFolder = 2;
-const uint8_t christmasFolder = 3;
-int waterRefillSounds = 0;
-int birthdaySounds = 0;
-int christmasSounds = 0;
+constexpr uint8_t WATER_REFILL_FOLDER = 1;
+constexpr uint8_t BIRTHDAY_FOLDER = 2;
+constexpr uint8_t CHRISTMAS_FOLDER = 3;
+uint8_t waterRefillSounds = 0;
+uint8_t birthdaySounds = 0;
+uint8_t christmasSounds = 0;
 
 /* 
  *  Webserver configuration
@@ -136,12 +136,15 @@ int christmasSounds = 0;
  *  The ip will be stored in the ip variable
  *  The hostname will be read from the config.json file and defines name of the webpage. The suffix .local will be appended since we use mDNS
  *  The pagename will be read from the config.json and is configured during setup. This will be the title of the homepage shown in the browser
+ *  TEXT_PLAIN and APPLICATION_JSON are used for mimetypes
  */
-const int port = 80;
+constexpr int port = 80;
 ESP8266WebServer server(port);
 String ip;
 String hostname;
 String pagename;
+const char TEXT_PLAIN[] PROGMEM = "text/plain";
+const char APPLICATION_JSON[] PROGMEM = "application/json";
 
 /*
  * Pin configuration
@@ -151,9 +154,9 @@ String pagename;
  * The relayPin is the pin that controls the realay to power the water pump
  * The led is used to signal access to the webserver, pump activation or upgrades
  */
-const int sensorPin = A0;
-const int releayPin = D0;
-const int led = LED_BUILTIN;
+constexpr int sensorPin = A0;
+constexpr int releayPin = D0;
+constexpr int led = LED_BUILTIN;
 
 /* 
  *  Logging configuration
@@ -177,7 +180,7 @@ String logPassword;
  * The variable needsWater is set to true, if the earth is too dry. Otherwise it is false
  * The variable needsRefill is set to true, if the water container needs to be refilled. Otherwise it is false
  * The variables birthdayDay and birthdayMonth store the birthday of the owner. They will be configured during the setup process and stored in the config.json. The Alraune will sing for the owner on his or her birthday
- * The variables christmasDay and christmasMonth store the day, when the Alraune will sing christmas songs or say nice things to the owner
+ * The variables CHRISTMAS_DAY and CHRISTMAS_MONTH store the day, when the Alraune will sing christmas songs or say nice things to the owner
  * The variables fromHour and toHour sotre the time range, in wich the Alraune will make sounds. It will stay silent in the hours outside that range
  */
 int sensorThreshold = 380;
@@ -186,8 +189,8 @@ boolean needsWater = false;
 boolean needsRefill = false;
 uint8_t birthdayDay = 22;
 uint8_t birthdayMonth = 11;
-const uint8_t christmasDay = 24;
-const uint8_t christmasMonth = 12;
+constexpr uint8_t CHRISTMAS_DAY = 24;
+constexpr uint8_t CHRISTMAS_MONTH = 12;
 uint8_t fromHour = 8;
 uint8_t toHour = 22;
 
@@ -258,6 +261,7 @@ void setup() {
   } else {
     Serial.println(F("Finished setup. Please connect to 'alraune' WLAN with password 'WaterIsLive' and go to http://alraune.local to finish configuration"));
   }
+  log("Setup finished");
 }
 
 
@@ -293,6 +297,6 @@ void loop() {
     handleEasterEggs();
     upgrade();
     logStatus();
-    handleNetworErrorsIfNeeded();
+    handleNetworkErrorsIfNeeded();
   }
 }

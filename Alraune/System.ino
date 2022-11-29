@@ -33,7 +33,7 @@ void setupSerial(){
  * The upgrade interval is the time betweet two checks for an upgrade on the configured upgrade server
  */
 void setupUpgrade(){
-  upgradeDelay.start(10 * 60 * 1000);
+  upgradeDelay.start(3 * 60 * 60 * 1000);
 }
 
 /*
@@ -68,7 +68,7 @@ void upgrade(){
     
     Serial.println(F("Start checking for new updates"));
     String firmware = upgradePath + "firmware.bin";
-    t_httpUpdate_return ret = ESPhttpUpdate.update(client, upgradeUrl, 443, firmware, version);
+    t_httpUpdate_return ret = ESPhttpUpdate.update(client, upgradeUrl, 443, firmware, VERSION);
     handleUpdateResult(ret);
   }
 }
@@ -123,7 +123,7 @@ void upgradeFiles(){
     http.begin(client, url);
     http.setUserAgent("curl/7.74.0");
     http.addHeader("Authorization", "Basic " + base64::encode(upgradeUser + ":" + upgradePassword));
-    http.addHeader("x-ESP8266-version", version);
+    http.addHeader("x-ESP8266-version", VERSION);
 
     int httpCode = http.GET();
 

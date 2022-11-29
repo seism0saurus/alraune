@@ -18,12 +18,10 @@ void handleEasterEggs(){
     easterEggDelay.repeat();
     
     if ( isBirthday() && isInHours() ){
-      Serial.println(F("Today is the configured birthday!"));
       playBirthdaySound();
     }
 
     if ( isChristmas() && isInHours() ){
-      Serial.println(F("Today is the configured Christmas day!"));
       playChristmasSound();
     }
   } else {
