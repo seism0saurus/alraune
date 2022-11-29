@@ -16,7 +16,7 @@ DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
 
 # Copy files to server
 ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_SERVER} mkdir -p ${UPGRADE_PROJECT_PATH}/${VERSION}
-scp -P ${SSH_PORT} ${DIR}/data/* ${SSH_USER}@${SSH_SERVER}:${UPGRADE_PROJECT_PATH}/${VERSION}/
-scp -P ${SSH_PORT} ${DIR}/Alraune.ino.bin.signed ${SSH_USER}@${SSH_SERVER}:${UPGRADE_PROJECT_PATH}/${VERSION}/firmware.bin
+scp -P ${SSH_PORT} ${DIR}/data/Alraune/* ${SSH_USER}@${SSH_SERVER}:${UPGRADE_PROJECT_PATH}/${VERSION}/
+scp -P ${SSH_PORT} ${DIR}/Alraune/Alraune.ino.bin.signed ${SSH_USER}@${SSH_SERVER}:${UPGRADE_PROJECT_PATH}/${VERSION}/firmware.bin
 
 ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_SERVER} ls -lah ${UPGRADE_PROJECT_PATH}/${VERSION}
